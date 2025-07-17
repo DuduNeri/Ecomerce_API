@@ -38,12 +38,12 @@ export async function login(req, res) {
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return res.status(401).json({ message: "Senha incorreta" });
+      return res.status(401).json({ message: "Sennha ou email incorretos" });
     }
 
     const token = await generateToken({ id: user.id, email: user.email });
 
-    return res.json({ token }); // 👈 só o token, como você quer
+    return res.json({ token }); 
   } catch (error) {
     console.error("Erro ao fazer login:", error);
     return res.status(500).json({ message: "Erro ao fazer login" });
