@@ -8,7 +8,7 @@ try {
   await sequelize.authenticate();
   console.log("🟢 Conexão com o banco de dados foi bem-sucedida!");
 
- await sequelize.sync(); 
+  await sequelize.sync();
   console.log("✅ Modelos sincronizados com o banco!");
 
   app.listen(PORT, () => {

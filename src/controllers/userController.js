@@ -1,5 +1,5 @@
 import { User } from "../models/index.js";
-import bcrypt from "bcryptjs"; // ← Já está aqui
+import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/generateTokens.js";
 
 
@@ -22,6 +22,7 @@ export async function createUser(req, res) {
     res.status(500).json({ message: "Erro ao criar usuário" });
   }
 }
+
 export async function login(req, res) {
   const { email, password } = req.body;
 
@@ -59,6 +60,7 @@ export async function getAllUsers(req, res) {
     res.status(500).json({ message: "Erro ao buscar usuários" });
   }
 }
+
 export async function getUserById(req, res) {
   const { id } = req.params;
   try {
@@ -74,6 +76,7 @@ export async function getUserById(req, res) {
     res.status(500).json({ message: "Erro ao buscar usuário por ID" });
   }
 }
+
 export async function deleteUserById(req, res) {
   const { id } = req.params;
   try {

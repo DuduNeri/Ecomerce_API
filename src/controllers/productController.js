@@ -3,42 +3,42 @@ import { Product } from "../models/index.js";
 import jwt from "jsonwebtoken";
 
 export function verifyToken(req, res, next) {
-  const authHeader = req.headers.authorization;
+    const authHeader = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "Token não fornecido" });
-  }
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ message: "Token não fornecido" });
+    }
 
-  const token = authHeader.split(" ")[1];
+    const token = authHeader.split(" ")[1];
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; 
-    next();
-  } catch (error) {
-    return res.status(401).json({ message: "Token inválido" });
-  }
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded;
+        next();
+    } catch (error) {
+        return res.status(401).json({ message: "Token inválido" });
+    }
 }
 
 export async function createProduct(req, res) {
-  const { title, description, price, image, category } = req.body;
-  const userId = req.user.id; 
+    const { title, description, price, image, category } = req.body;
+    const userId = req.user.id;
 
-  try {
-    const product = await Product.create({
-      title,
-      description,
-      price,
-      image,
-      category,
-      userId
-    });
+    try {
+        const product = await Product.create({
+            title,
+            description,
+            price,
+            image,
+            category,
+            userId
+        });
 
-    res.status(201).json({ message: "Produto criado com sucesso!", product });
-  } catch (error) {
-    console.error("Erro ao criar produto:", error);
-    res.status(500).json({ message: "Erro ao criar produto" });
-  }
+        res.status(201).json({ message: "Produto criado com sucesso!", product });
+    } catch (error) {
+        console.error("Erro ao criar produto:", error);
+        res.status(500).json({ message: "Erro ao criar produto" });
+    }
 }
 
 export async function getAllProducts(req, res) {
@@ -50,6 +50,7 @@ export async function getAllProducts(req, res) {
         res.status(500).json({ message: "Erro ao buscar produtos" });
     }
 }
+
 export async function getProductById(req, res) {
     const { id } = req.params;
     if (!id) {
@@ -66,6 +67,7 @@ export async function getProductById(req, res) {
         res.status(500).json({ message: "Erro ao buscar produto" });
     }
 }
+
 export async function updateProduct(req, res) {
     const { id } = req.params;
     const { title, description, price, image, category } = req.body;
@@ -89,6 +91,7 @@ export async function updateProduct(req, res) {
         res.status(500).json({ message: "Erro ao atualizar produto" });
     }
 }
+
 export async function deleteProduct(req, res) {
     const { id } = req.params;
     try {
