@@ -1,42 +1,46 @@
-import Product from "../models/Product.js";
+import { Product } from "../models/index.js";
+
 import jwt from "jsonwebtoken";
 
-export async function verifyToken(req, res, next) {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1]; 
+export function verifyToken(req, res, next) {
+  const authHeader = req.headers.authorization;
 
-    if (!token) {
-        return res.status(401).json({ message: "Token não fornecido" });
-    }
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "Token não fornecido" });
+  }
 
-    jwt.verify(token, "sua_chave_secreta_aqui", (err, user) => {
-        if (err) {
-            return res.status(403).json({ message: "Token inválido" });
-        }
-        req.user = user; 
-        next();
-    });
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded; 
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: "Token inválido" });
+  }
 }
 
 export async function createProduct(req, res) {
-    const { title, description, price, image, category } = req.body;
-    if (!title || !description || !price || !image || !category) {
-        return res.status(400).json({ message: "Todos os campos são obrigatórios" });
-    }
-    try {
-        const isertProduct = await Product.create({
-            title,
-            description,
-            price,
-            image,
-            category,
-        });
-        res.status(201).json(isertProduct);
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({ message: "Erro ao criar produto" });
-    }
+  const { title, description, price, image, category } = req.body;
+  const userId = req.user.id; 
+
+  try {
+    const product = await Product.create({
+      title,
+      description,
+      price,
+      image,
+      category,
+      userId
+    });
+
+    res.status(201).json({ message: "Produto criado com sucesso!", product });
+  } catch (error) {
+    console.error("Erro ao criar produto:", error);
+    res.status(500).json({ message: "Erro ao criar produto" });
+  }
 }
+
 export async function getAllProducts(req, res) {
     try {
         const getProducts = await Product.findAll();
