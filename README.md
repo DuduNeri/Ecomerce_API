@@ -12,16 +12,16 @@ API RESTful para gerenciamento de usuários e produtos em um sistema de e-commer
 - dotenv
 
 ## 🚀 Como Rodar o Projeto
-1. Clone o repositório:
+## 1. Clone o repositório:
 ```bash
 git clone https://github.com/DuduNeri/Ecomerce_API.git
 cd Ecomerce_API
 
-2. Instale as dependências:
+## 2. Instale as dependências:
 bash
 npm install
 
-3. Crie um arquivo .env na raiz com:
+## 3. Crie um arquivo .env na raiz com:
 
 ini
 PORT=8000
@@ -33,7 +33,7 @@ DB_PORT=5432
 JWT_SECRET=sua_chave_secreta
 SECRET_KEY=sua_chave_secreta
 
-4. Execute o servidor:
+## 4. Execute o servidor:
 
 bash
 npm start 
@@ -43,7 +43,7 @@ npm start
 text
 http://localhost:8000
 
-6. 📁 Estrutura do Projeto
+## 6. 📁 Estrutura do Projeto
 text
 src/
 ├── config/           # Configuração do banco de dados
