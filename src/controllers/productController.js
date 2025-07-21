@@ -73,7 +73,7 @@ export async function getAllProductsWithOwner(req, res) {
     const products = await Product.findAll({
       include: [{
         model: User,
-        as: "user", // 👈 aqui está o alias correto
+        as: "user", 
         attributes: ["username"]
       }],
     });
@@ -82,7 +82,7 @@ export async function getAllProductsWithOwner(req, res) {
       id: prod.id,
       nome: prod.name,
       preco: prod.price,
-      dono: prod.user?.username || "Desconhecido", // 👈 usa o alias aqui também
+      dono: prod.user?.username || "Desconhecido", 
     }));
 
     res.status(200).json(resultado);
@@ -91,7 +91,6 @@ export async function getAllProductsWithOwner(req, res) {
     res.status(500).json({ message: "Erro ao buscar produtos com donos" });
   }
 }
-
 
 export async function updateProduct(req, res) {
     const { id } = req.params;

@@ -11,5 +11,4 @@ routerProducts.get("/products-with-owners", getAllProductsWithOwner);
 routerProducts.put("/products/:id", verifyToken, updateProduct);
 routerProducts.delete("/products/:id", verifyToken, deleteProduct);
 
-
 export default routerProducts;

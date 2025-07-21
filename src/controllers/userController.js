@@ -76,6 +76,7 @@ export async function getUserById(req, res) {
     res.status(500).json({ message: "Erro ao buscar usuário por ID" });
   }
 }
+
 export async function getAllProductsByUsername(req, res) {
   const { username } = req.params;
 
@@ -99,7 +100,6 @@ export async function getAllProductsByUsername(req, res) {
     res.status(500).json({ message: "Erro ao buscar produtos do usuário", error: error.message || error });
   }
 }
-
 
 export async function deleteUserById(req, res) {
   const { id } = req.params;
