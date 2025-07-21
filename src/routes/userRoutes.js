@@ -8,7 +8,7 @@ router.post("/users", createUser);
 router.post("/login", login);
 router.get("/users", getAllUsers)
 router.get("/users/:id", getUserById);
-router.get("/users/:username/products", verifyToken, getAllProductsByUsername);
+router.get("/users/:username/products", getAllProductsByUsername);
 router.delete("/users/:id", verifyToken, deleteUserById);
 router.put("/users/:id", verifyToken, updateUser);
 

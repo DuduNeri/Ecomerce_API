@@ -82,17 +82,24 @@ export async function getAllProductsByUsername(req, res) {
   try {
     const user = await User.findOne({
       where: { username },
-      include: [{ model: Product }]
+      include: [{
+        model: Product,
+        attributes: { exclude: ["userId"] }
+      }]
     });
 
     if (!user) return res.status(404).json({ message: "Usuário não encontrado" });
 
-    res.status(200).json({ produtos: user.Products });
+    res.status(200).json({
+      user: user.username,
+      produtos: user.Products
+    });
   } catch (error) {
-    console.error("Erro detalhado:", error); // Mostra erro real no console
+    console.error("Erro detalhado:", error);
     res.status(500).json({ message: "Erro ao buscar produtos do usuário", error: error.message || error });
   }
 }
+
 
 export async function deleteUserById(req, res) {
   const { id } = req.params;

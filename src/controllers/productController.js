@@ -1,4 +1,4 @@
-import { Product } from "../models/index.js";
+import { Product, User } from "../models/index.js";
 
 import jwt from "jsonwebtoken";
 
@@ -67,6 +67,31 @@ export async function getProductById(req, res) {
         res.status(500).json({ message: "Erro ao buscar produto" });
     }
 }
+
+export async function getAllProductsWithOwner(req, res) {
+  try {
+    const products = await Product.findAll({
+      include: [{
+        model: User,
+        as: "user", // 👈 aqui está o alias correto
+        attributes: ["username"]
+      }],
+    });
+
+    const resultado = products.map(prod => ({
+      id: prod.id,
+      nome: prod.name,
+      preco: prod.price,
+      dono: prod.user?.username || "Desconhecido", // 👈 usa o alias aqui também
+    }));
+
+    res.status(200).json(resultado);
+  } catch (error) {
+    console.log("Erro detalhado:", error);
+    res.status(500).json({ message: "Erro ao buscar produtos com donos" });
+  }
+}
+
 
 export async function updateProduct(req, res) {
     const { id } = req.params;
