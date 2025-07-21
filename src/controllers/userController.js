@@ -1,4 +1,4 @@
-import { User } from "../models/index.js";
+import { User, Product } from "../models/index.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/generateTokens.js";
 
@@ -74,6 +74,23 @@ export async function getUserById(req, res) {
   } catch (error) {
     console.log("Erro ao buscar usuário por ID:", error);
     res.status(500).json({ message: "Erro ao buscar usuário por ID" });
+  }
+}
+export async function getAllProductsByUsername(req, res) {
+  const { username } = req.params;
+
+  try {
+    const user = await User.findOne({
+      where: { username },
+      include: [{ model: Product }]
+    });
+
+    if (!user) return res.status(404).json({ message: "Usuário não encontrado" });
+
+    res.status(200).json({ produtos: user.Products });
+  } catch (error) {
+    console.error("Erro detalhado:", error); // Mostra erro real no console
+    res.status(500).json({ message: "Erro ao buscar produtos do usuário", error: error.message || error });
   }
 }
 
