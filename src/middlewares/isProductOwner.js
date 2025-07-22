@@ -14,7 +14,6 @@ export async function isProductOwner(req, res, next) {
       return res.status(403).json({ message: "Você não tem permissão para alterar esse produto" });
     }
 
-    // Deixa o produto disponível para o controller usar, se quiser
     req.product = product;
 
     next();
