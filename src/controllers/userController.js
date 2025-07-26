@@ -1,6 +1,10 @@
 import { User, Product } from "../models/index.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/generateTokens.js";
+import {
+  hashedPassword,
+  isEmailEmUso,
+} from "../services/userService.js";
 
 
 export async function createUser(req, res) {
@@ -122,21 +126,22 @@ export async function updateUser(req, res) {
 
   try {
     const user = await User.findByPk(id);
-    if (!user) {
-      return res.status(404).json({ message: "Usuário não encontrado" });
-    }
+    if (!user) return res.status(404).json({ message: "Usuário não encontrado" });
+
     if (!username || !email || !password) {
       return res.status(400).json({ message: "Todos os campos são obrigatórios" });
     }
-    const emailEmUso = await User.findOne({ where: { email } });
-    if (emailEmUso && emailEmUso.id !== user.id) {
+
+    const emailJaUsado = await isEmailEmUso(email, user.id);
+    if (emailJaUsado) {
       return res.status(409).json({ message: "E-mail já está em uso por outro usuário" });
     }
-    const hashedPassword = await bcrypt.hash(password, 10);
+
     user.username = username;
     user.email = email;
-    user.password = hashedPassword;
+    user.password = await hashedPassword(password);
     await user.save();
+
     res.status(200).json({ message: "Usuário atualizado com sucesso" });
   } catch (error) {
     console.error("Erro ao atualizar usuário por ID:", error);
