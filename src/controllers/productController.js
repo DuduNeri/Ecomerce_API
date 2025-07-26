@@ -9,7 +9,6 @@ import {
 
 import jwt from "jsonwebtoken";
 
-// ✅ Middleware separado: move depois para middlewares/authMiddleware.js
 export function verifyToken(req, res, next) {
   const authHeader = req.headers.authorization;
 
