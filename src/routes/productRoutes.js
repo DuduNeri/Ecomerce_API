@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { createProduct, getAllProducts, getProductById, updateProduct, getAllProductsWithOwner, deleteProduct } from "../controllers/productController.js";
-import { verifyToken } from "../controllers/productController.js";
+import { authMiddleware } from "../middlewares/authMiddleware.js";
 import { isProductOwner } from "../middlewares/isProductOwner.js";
 import { validateBody } from "../middlewares/validateSchema.js";
 import { productSchema } from "../validations/productValidation.js";
@@ -9,7 +9,7 @@ import { upload } from "../middlewares/uploadsImage.js";
 const routerProducts = Router();
 
 routerProducts.post("/products",
-    verifyToken,
+    authMiddleware,
     upload.single("image"),
     validateBody(productSchema),
     createProduct);
@@ -24,12 +24,12 @@ routerProducts.get("/products-with-owners",
     getAllProductsWithOwner);
 
 routerProducts.put("/products/:id",
-    verifyToken, validateBody(productSchema),
+    authMiddleware, validateBody(productSchema),
     isProductOwner,
     updateProduct);
 
 routerProducts.delete("/products/:id",
-    verifyToken,
+    authMiddleware,
     isProductOwner,
     deleteProduct);
 

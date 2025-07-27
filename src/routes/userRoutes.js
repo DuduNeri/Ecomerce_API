@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { createUser, getAllUsers, getUserById, deleteUserById, getAllProductsByUsername, updateUser, login } from "../controllers/userController.js";
-import { verifyToken } from "../controllers/productController.js";
+import { authMiddleware } from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
@@ -20,11 +20,11 @@ router.get("/users/:username/products",
     getAllProductsByUsername);
 
 router.delete("/users/:id",
-    verifyToken,
+    authMiddleware,
     deleteUserById);
 
 router.put("/users/:id",
-    verifyToken,
+    authMiddleware,
     updateUser);
 
 export default router;
